@@ -1,2 +1,3 @@
-# udacity_predict_customer_churn
-Stores the first project completed towards the Machine Learning DevOps Engineer Nanodegree from Udacity
+# Udacity - Predict Customer Churn
+
+This repository stores the first project completed towards the Machine Learning DevOps Engineer Nanodegree from Udacity
