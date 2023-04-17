@@ -169,7 +169,7 @@ def perform_feature_engineering(df, numeric_lst, category_lst, response):
 
 def train_logistic_reg(X_train, X_test, y_train):
     '''
-    Train Logistic Regression model, return model and model predictions
+    Train Logistic Regression model, return model and model predictions, and save model
 
     :param X_train: X training data
     :param X_test: X testing data
@@ -378,11 +378,11 @@ def main():
     X_train, X_test, y_train, y_test = perform_feature_engineering(
         df, quant_cols, cat_cols, 'Churn')
 
-    # Train Models
+    # Train and Save Models
     lrc, y_train_preds_lr, y_test_preds_lr = train_logistic_reg(
-        X_train, X_test, y_train)
+        X_train, X_test, y_train, './models')
     cv_rfc, y_train_preds_rf, y_test_preds_rf = train_random_forest(
-        X_train, X_test, y_train)
+        X_train, X_test, y_train, './models')
     # Save Models
     save_model(lrc, 'Logistic Regression', './models')
     save_model(cv_rfc, 'Random Forest', './models')
