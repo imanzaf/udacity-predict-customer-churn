@@ -1,52 +1,28 @@
+'''
+This file defines fixture in the Namespace,
+    to make them accessible and editable in other files.
+
+Author: Iman Zafar
+Date: April 2023
+'''
+
 import pytest
 
-def df_plugin():
-    return None
 
-def X_train_plugin():
-    return None
-
-def X_test_plugin():
-    return None
-
-def y_train_plugin():
-    return None
-
-def y_test_plugin():
-    return None
-
-def lrc_plugin():
-    return None
-
-def train_preds_lrc_plugin():
-    return None
-
-def test_preds_lrc_plugin():
-    return None
-
-def rf_plugin():
-    return None
-
-def train_preds_rf_plugin():
-    return None
-
-def test_preds_rf_plugin():
-    return None
-
-
+# configure function to set up empty variables
 def pytest_configure():
-    pytest.df = df_plugin()
+    pytest.df = None
 
-    pytest.X_train = X_train_plugin()
-    pytest.X_test = X_test_plugin()
+    pytest.X_train = None
+    pytest.X_test = None
 
-    pytest.y_train = y_train_plugin()
-    pytest.y_test = y_test_plugin()
+    pytest.y_train = None
+    pytest.y_test = None
 
-    pytest.lrc = lrc_plugin()
-    pytest.train_preds_lrc = train_preds_lrc_plugin()
-    pytest.test_preds_lrc = test_preds_lrc_plugin()
+    pytest.lrc = None
+    pytest.train_preds_lrc = None
+    pytest.test_preds_lrc = None
 
-    pytest.rf = rf_plugin()
-    pytest.train_preds_rf = train_preds_rf_plugin()
-    pytest.test_preds_rf = test_preds_rf_plugin()
+    pytest.rf = None
+    pytest.train_preds_rf = None
+    pytest.test_preds_rf = None
