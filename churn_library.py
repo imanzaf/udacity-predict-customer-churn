@@ -124,6 +124,8 @@ def multivariate_eda_plot(
         plt.figure(figsize=(20, 10))
         plt.title('{} vs {} Scatter Plot'.format(feature1, feature2))
         plt.scatter(feature1, feature2, data=df)
+        plt.xlabel(feature1)
+        plt.ylabel(feature2)
         plt.savefig('{}/{}_vs_{}.png'.format(output_path,
                     feature1, feature2), bbox_inches='tight')
         plt.close()
@@ -397,7 +399,7 @@ def main():
     X_train, X_test, y_train, y_test = perform_feature_engineering(
         df, quant_cols, cat_cols, 'Churn')
 
-    # Train and Save Models
+    # Train Models
     lrc, y_train_preds_lr, y_test_preds_lr = train_logistic_reg(
         X_train, X_test, y_train)
     cv_rfc, y_train_preds_rf, y_test_preds_rf = train_random_forest(
@@ -406,7 +408,7 @@ def main():
     save_model(lrc, 'Logistic Regression', './models')
     save_model(cv_rfc, 'Random Forest', './models')
 
-    # Classification Report
+    # Classification Reports
     classification_report_image(
         y_train,
         y_test,
