@@ -2,6 +2,7 @@
 
 This repository stores the first project completed towards the Machine Learning DevOps Engineer Nanodegree from Udacity
 
+<br/>
 
 ### Project Description
 The focus of this project is to implement software engineering and coding best practices to find credit card customers 
@@ -12,9 +13,13 @@ Feature Engineering, Model Training, Prediction, and Model Evaluation
 3. Run the functions and the test file to generate the required results 
 and produce a file with logs of any errors and INFO messages
 
+<br/>
+
 ### Data Description
 The data provides information held by a bank about 10,127 of their credit card customers. This includes product information
 like 'Credit Limit' and 'Months on book', and background information like 'Marital Status' and 'Customer Age'.
+
+<br/>
 
 ### File Descriptions
 + data/ : holds a single csv file with bank data 
@@ -28,6 +33,8 @@ like 'Credit Limit' and 'Months on book', and background information like 'Marit
 + churn_library.py : library of functions to find customers who are likely to churn
 + churn_script_logging_and_tests.py : unit tests for all functions in churn_library.py
 + conftest.py : stores fixtures in the pytest Namespace for use in churn_script_logging_and_tests.py
+
+<br/>
 
 ### Run the Files
 Two files need to be run in order to complete the project. Both can be run in the command line using the commands below (in the order they appear in)
