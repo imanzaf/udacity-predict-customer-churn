@@ -56,10 +56,13 @@ def cat_eda_plot(df, feature, output_path, style='bmh'):
 
     :returns: None
     '''
+    # create plot
     plt.style.use(style)
     plt.figure(figsize=(20, 10))
     plt.title('{} Bar Plot'.format(feature))
     df[feature].value_counts('normalize').plot(kind='bar')
+
+    # save plot as image
     plt.savefig('{}/{}_barplot.png'.format(output_path,
                 feature), bbox_inches='tight')
     plt.close()
@@ -76,10 +79,13 @@ def num_eda_plot(df, feature, output_path, style='bmh'):
 
     :returns: None
     '''
+    # create plot
     plt.style.use(style)
     plt.figure(figsize=(20, 10))
     plt.title('{} Histogram with KDE'.format(feature))
     sns.histplot(df[feature], stat='density', kde=True)
+
+    # save plot as image
     plt.savefig('{}/{}_hist.png'.format(output_path,
                 feature), bbox_inches='tight')
     plt.close()
@@ -105,6 +111,8 @@ def multivariate_eda_plot(
     :returns: None
     '''
     plt.style.use(style)
+
+    # check if feature names provided, else create correlation heatmap
     if (feature1 is None) and (feature2 is None):
         plt.figure(figsize=(20, 10))
         plt.title('Correlation Heatmap')
@@ -137,11 +145,14 @@ def encoder_helper(df, category_lst, response):
     :returns encoded_cols: list of names of encoded columns
     '''
     encoded_cols = []
+
+    # loop to apply encoding to each categorica col
     for feat in category_lst:
         groups = df.groupby(feat).mean()[response]
         df['{}_{}'.format(feat, response)] = df[feat].apply(
             lambda x: groups.loc[x])
         encoded_cols.append('{}_{}'.format(feat, response))
+
     return df, encoded_cols
 
 
@@ -160,10 +171,14 @@ def perform_feature_engineering(df, numeric_lst, category_lst, response):
     :returns y_train: y training data
     :returns y_test: y testing data
     '''
+    # perform encoding
     df, encoded_cols = encoder_helper(df, category_lst, response)
+
+    # split data into training and test
     X, y = df[numeric_lst + encoded_cols], df[response]
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=42)
+
     return X_train, X_test, y_train, y_test
 
 
@@ -182,6 +197,8 @@ def train_logistic_reg(X_train, X_test, y_train):
     # train Logistic Regression model
     lrc = LogisticRegression(solver='lbfgs', max_iter=3000)
     lrc.fit(X_train, y_train)
+
+    # generate predictions
     y_train_preds_lr = lrc.predict(X_train)
     y_test_preds_lr = lrc.predict(X_test)
 
@@ -210,6 +227,8 @@ def train_random_forest(X_train, X_test, y_train):
     }
     cv_rfc = GridSearchCV(estimator=rfc, param_grid=param_grid, cv=5)
     cv_rfc.fit(X_train, y_train)
+
+    # generate predictions
     y_train_preds_rf = cv_rfc.best_estimator_.predict(X_train)
     y_test_preds_rf = cv_rfc.best_estimator_.predict(X_test)
 
@@ -245,6 +264,8 @@ def classification_report_image(y_train, y_test,
 
     :returns: None
     '''
+
+    # create report
     plt.rc('figure', figsize=(5, 5))
     plt.text(0.01, 1.25, str('{} Train'.format(model_name)),
              {'fontsize': 10}, fontproperties='monospace')
@@ -261,6 +282,8 @@ def classification_report_image(y_train, y_test,
                 y_train, y_train_preds)), {
             'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
+
+    # save report as image
     plt.savefig('{}/{}_classification_report.png'.format(output_path,
                 model_name.lower().replace(' ', '_')), bbox_inches='tight')
     plt.close()
@@ -279,10 +302,13 @@ def roc_curve_image(rfc, lrc, X_test, y_test, output_path):
 
     :returns: None
     '''
+    # create plot
     plt.figure(figsize=(15, 8))
     ax = plt.gca()
     plot_roc_curve(rfc.best_estimator_, X_test, y_test, ax=ax, alpha=0.8)
     plot_roc_curve(lrc, X_test, y_test, ax=ax, alpha=0.8)
+
+    # save plot as image
     plt.savefig('{}/roc_curve.png'.format(output_path), bbox_inches='tight')
     plt.close()
 
@@ -297,26 +323,20 @@ def feature_importance_plot(model, X_data, output_path):
 
     :returns: None
     '''
-    # Calculate feature importances
+    # calculate feature importances and sort
     importances = model.feature_importances_
-    # Sort feature importances in descending order
     indices = np.argsort(importances)[::-1]
-
-    # Rearrange feature names so they match the sorted feature importances
     names = [X_data.columns[i] for i in indices]
 
-    # Create plot
+    # create plot
     plt.figure(figsize=(20, 5))
-
-    # Create plot title
     plt.title("Feature Importance")
     plt.ylabel('Importance')
-
-    # Add bars
     plt.bar(range(X_data.shape[1]), importances[indices])
-    # Add feature names as x-axis labels
+    # add feature names as x-axis labels
     plt.xticks(range(X_data.shape[1]), names, rotation=90)
 
+    # save plot as image
     plt.savefig(
         '{}/feature_importances.png'.format(output_path),
         bbox_inches='tight')
@@ -380,9 +400,9 @@ def main():
 
     # Train and Save Models
     lrc, y_train_preds_lr, y_test_preds_lr = train_logistic_reg(
-        X_train, X_test, y_train, './models')
+        X_train, X_test, y_train)
     cv_rfc, y_train_preds_rf, y_test_preds_rf = train_random_forest(
-        X_train, X_test, y_train, './models')
+        X_train, X_test, y_train)
     # Save Models
     save_model(lrc, 'Logistic Regression', './models')
     save_model(cv_rfc, 'Random Forest', './models')
