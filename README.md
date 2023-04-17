@@ -26,7 +26,7 @@ like 'Credit Limit' and 'Months on book', and background information like 'Marit
 + images/ : stores folders with images from EDA and model results
   + eda/ : stores three folders, one with plots for categorical variables, one with plots for numeric variables,
   and one with multivariate plots
-  + results/ : holds images of model result, including: classification reports, roc curve, and feature importances
+  + results/ : holds images of model results, including: classification reports, roc curves, and feature importances
 + logs/ : holds a single file with logs from running churn_script_logging_and_tests.csv
 + models/ : holds model pkl files
 + churn_notebook.ipynb : original code, refactored in churn_library.py
