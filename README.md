@@ -22,23 +22,23 @@ like 'Credit Limit' and 'Months on book', and background information like 'Marit
 <br/>
 
 ### File Descriptions
-+ data/ : holds a single csv file with bank data 
-+ images/ : holds folders with images from EDA, and model result plots
-  + eda/ : holds three folders, one with plots for categorical variables, one with plots for numeric variables,
++ data/ : holds a single csv file with bank data
++ images/ : stores folders with images from EDA and model results
+  + eda/ : stores three folders, one with plots for categorical variables, one with plots for numeric variables,
   and one with multivariate plots
-  + results/ : stores images of result plots, including: classification reports, roc curve, and feature importances
+  + results/ : holds images of result plots, including: classification reports, roc curve, and feature importances
 + logs/ : holds a single file with logs from running churn_script_logging_and_tests.csv
 + models/ : holds model pkl files
-+ churn_notebook.ipynb : holds original code, refactored in churn_library.py
++ churn_notebook.ipynb : original code, refactored in churn_library.py
 + churn_library.py : library of functions to find customers who are likely to churn
 + churn_script_logging_and_tests.py : unit tests for all functions in churn_library.py
-+ conftest.py : stores fixtures in the pytest Namespace for use in churn_script_logging_and_tests.py
++ conftest.py : fixtures in the pytest Namespace for use in churn_script_logging_and_tests.py
 
 <br/>
 
 ### Run the Files
 Two files need to be run in order to complete the project. Both can be run in the command line using the commands below (in the order they appear in)
-1. churn_library.py, which produces the eda and model results
+1. churn_library.py - produces the eda and model results
 <br/> `python churn_library.py`
-2. churn_script_logging_and_test.py, which populates the churn_library.log file by running all unit tests 
+2. churn_script_logging_and_test.py - populates the churn_library.log file by running all unit tests 
 <br/> `pytest churn_script_logging_and_tests.py`
