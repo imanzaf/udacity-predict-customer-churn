@@ -9,8 +9,10 @@ Date: April 2023
 import pytest
 
 
-# configure function to set up empty variables
 def pytest_configure():
+    '''
+    configure function to set up empty variables
+    '''
     pytest.df = None
 
     pytest.X_train = None
