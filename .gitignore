@@ -1,5 +1,8 @@
 .idea/
 .ipynb_checkpoints/
 .DS_Store
+.pytest_cache/
+__pycache__/
 project-guide.ipynb
 github-auth
+func-test.ipynb
