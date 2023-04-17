@@ -171,6 +171,9 @@ def quant_cols():
 def test_encoder_helper(cat_cols, response):
     '''
     test encoder helper function
+
+    :param cat_cols: list of categorical columns for input in encoder_helper function
+    :param response: (str) name of response column for input in encoder_helper function
     '''
     df = pytest.df
 
@@ -188,6 +191,10 @@ def test_encoder_helper(cat_cols, response):
 def test_perform_feature_engineering(quant_cols, cat_cols, response):
     '''
     test feature engineering function
+
+    :param quant_cols: list of numeric columns for input in perform_feature_engineering()
+    :param cat_cols: list of categorical columns for input in perform_feature_engineering()
+    :param response: (str) name of response column for input in perform_feature_engineering()
     '''
     df = pytest.df
 
