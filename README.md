@@ -16,7 +16,7 @@ and produce a file with logs of any errors and INFO messages
 <br/>
 
 ### Data Description
-The data provides information held by a bank about 10,127 of their credit card customers. This includes product information
+The data provided has information about 10,127 of a bank's credit card customers. This includes product information
 like 'Credit Limit' and 'Months on book', and background information like 'Marital Status' and 'Customer Age'.
 
 <br/>
