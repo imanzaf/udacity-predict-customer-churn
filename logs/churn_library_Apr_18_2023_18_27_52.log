@@ -1,0 +1,14 @@
+root - INFO - Testing import_data: SUCCESS
+root - INFO - Testing create_churn_col: SUCCESS
+root - INFO - Testing cat_eda_plot: SUCCESS
+root - INFO - Testing num_eda_plot: SUCCESS
+root - INFO - Testing multivariate_eda_plot (heatmap): SUCCESS
+root - INFO - Testing multivariate_eda_plot (bivariate plot): SUCCESS
+root - INFO - Testing encoder_helper: SUCCESS
+root - INFO - Testing perform_feature_engineering: SUCCESS
+root - INFO - Testing train_logistic_reg: SUCCESS
+root - INFO - Testing train_random_forest: SUCCESS
+root - INFO - Testing save_model: SUCCESS
+root - INFO - Testing classification_report_image: SUCCESS
+root - INFO - Testing roc_curve_image: SUCCESS
+root - INFO - Testing feature_importance_plot: SUCCESS

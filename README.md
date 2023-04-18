@@ -38,6 +38,11 @@ like 'Credit Limit' and 'Months on book', and background information like 'Marit
 <br/>
 
 ### Run the Files
+#### Install Libraries
+The requirements.txt file specifies all libraries needed in order to run the project. These can be installed by running
+the below in the command line
+<br/> `python -m pip install -r requirements.txt`
+#### Run Files
 Two files need to be run in order to complete the project. Both can be run in the command line using the commands below (in the order they appear in)
 1. churn_library.py - produces the eda and model results
 <br/> `python churn_library.py`

@@ -8,13 +8,14 @@ Date: April 2023
 # import libraries
 import os
 import logging
+import time
 import pytest
 import pandas as pd
 import churn_library as cl
 
 # set up logging file
 logging.basicConfig(
-    filename='./logs/churn_library.log',
+    filename="./logs/churn_library_{}.log".format(time.strftime('%b_%d_%Y_%H_%M_%S')),
     level=logging.INFO,
     filemode='w',
     format='%(name)s - %(levelname)s - %(message)s',

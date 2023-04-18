@@ -25,30 +25,30 @@ def import_data(pth):
 
     :param pth: a path to the csv
 
-    :returns df: pandas dataframe
+    :returns bank_df: pandas dataframe
     '''
-    df = pd.read_csv(pth)
-    return df
+    bank_df = pd.read_csv(pth)
+    return bank_df
 
 
-def create_churn_col(df):
+def create_churn_col(bank_df):
     '''
     Create binary column for whether a customer has attrited or not
 
-    :param df: pandas dataframe with 'Attrition_Flag' column
+    :param bank_df: pandas dataframe with 'Attrition_Flag' column
 
     :return df: pandas dataframe with 'Churn' column
     '''
-    df['Churn'] = df['Attrition_Flag'].apply(
+    bank_df['Churn'] = bank_df['Attrition_Flag'].apply(
         lambda val: 0 if val == "Existing Customer" else 1)
-    return df
+    return bank_df
 
 
-def cat_eda_plot(df, feature, output_path, style='bmh'):
+def cat_eda_plot(bank_df, feature, output_path, style='bmh'):
     '''
     Perform eda on categorical feature of df - plot barplot of value counts and save figure as image
 
-    :param df: pandas dataframe
+    :param bank_df: pandas dataframe
     :param feature: (str) categorical feature name
     :param output_path: (str) path to save image to
     :param style: (str - optional) matplotlib style sheet name
@@ -59,7 +59,7 @@ def cat_eda_plot(df, feature, output_path, style='bmh'):
     plt.style.use(style)
     plt.figure(figsize=(20, 10))
     plt.title('{} Bar Plot'.format(feature))
-    df[feature].value_counts('normalize').plot(kind='bar')
+    bank_df[feature].value_counts('normalize').plot(kind='bar')
 
     # save plot as image
     plt.savefig('{}/{}_barplot.png'.format(output_path,
@@ -67,11 +67,11 @@ def cat_eda_plot(df, feature, output_path, style='bmh'):
     plt.close()
 
 
-def num_eda_plot(df, feature, output_path, style='bmh'):
+def num_eda_plot(bank_df, feature, output_path, style='bmh'):
     '''
     Perform eda on numerical feature of df - plot histogram with kde and save figure as image
 
-    :param df: pandas dataframe
+    :param bank_df: pandas dataframe
     :param feature: (str) numerical feature name
     :param output_path: (str) path to save image to
     :param style: (str - optional) matplotlib style sheet name
@@ -82,7 +82,7 @@ def num_eda_plot(df, feature, output_path, style='bmh'):
     plt.style.use(style)
     plt.figure(figsize=(20, 10))
     plt.title('{} Histogram with KDE'.format(feature))
-    sns.histplot(df[feature], stat='density', kde=True)
+    sns.histplot(bank_df[feature], stat='density', kde=True)
 
     # save plot as image
     plt.savefig('{}/{}_hist.png'.format(output_path,
@@ -91,7 +91,7 @@ def num_eda_plot(df, feature, output_path, style='bmh'):
 
 
 def multivariate_eda_plot(
-        df,
+        bank_df,
         output_path,
         feature1=None,
         feature2=None,
@@ -101,7 +101,7 @@ def multivariate_eda_plot(
         If no feature names specified, heatmap of all numerical features created
         Figure saved as image
 
-    :param df: pandas dataframe
+    :param bank_df: pandas dataframe
     :param feature1: (str - optional) numerical feature name
     :param feature2: (str - optional) numerical feature name
     :param output_path: (str) path to save image to
@@ -115,7 +115,7 @@ def multivariate_eda_plot(
     if (feature1 is None) and (feature2 is None):
         plt.figure(figsize=(20, 10))
         plt.title('Correlation Heatmap')
-        sns.heatmap(df.corr(), annot=False, linewidths=2)
+        sns.heatmap(bank_df.corr(), annot=False, linewidths=2)
         plt.savefig(
             '{}/df_heatmap.png'.format(output_path),
             bbox_inches='tight')
@@ -123,7 +123,7 @@ def multivariate_eda_plot(
     elif (feature1 is not None) and (feature2 is not None):
         plt.figure(figsize=(20, 10))
         plt.title('{} vs {} Scatter Plot'.format(feature1, feature2))
-        plt.scatter(feature1, feature2, data=df)
+        plt.scatter(feature1, feature2, data=bank_df)
         plt.xlabel(feature1)
         plt.ylabel(feature2)
         plt.savefig('{}/{}_vs_{}.png'.format(output_path,
@@ -133,12 +133,12 @@ def multivariate_eda_plot(
         print('Both features need to be specified for bivariate analysis')
 
 
-def encoder_helper(df, category_lst, response):
+def encoder_helper(bank_df, category_lst, response):
     '''
     helper function to turn each categorical column into a new column with
     proportion of churn for each category - associated with cell 15 from the notebook
 
-    :param df: pandas dataframe
+    :param bank_df: pandas dataframe
     :param category_lst: list of columns that contain categorical features
     :param response: string of response name
 
@@ -149,20 +149,19 @@ def encoder_helper(df, category_lst, response):
 
     # loop to apply encoding to each categorica col
     for feat in category_lst:
-        groups = df.groupby(feat).mean()[response]
-        df['{}_{}'.format(feat, response)] = df[feat].apply(
-            lambda x: groups.loc[x])
-        encoded_cols.append('{}_{}'.format(feat, response))
+        new_col = '{}_{}'.format(feat, response)
+        bank_df[new_col] = bank_df.groupby(feat)["Churn"].transform("mean")
+        encoded_cols.append(new_col)
 
-    return df, encoded_cols
+    return bank_df, encoded_cols
 
 
-def perform_feature_engineering(df, numeric_lst, category_lst, response):
+def perform_feature_engineering(bank_df, numeric_lst, category_lst, response):
     '''
     Perform encoding of categorical features using encoder_helper() function
         and split data into test and training
 
-    :param df: pandas dataframe
+    :param bank_df: pandas dataframe
     :param numeric_lst: list of columns that contain numeric features
     :param category_lst: list of columns that contain categorical features
     :param response: string of response name
@@ -173,10 +172,10 @@ def perform_feature_engineering(df, numeric_lst, category_lst, response):
     :returns y_test: y testing data
     '''
     # perform encoding
-    df, encoded_cols = encoder_helper(df, category_lst, response)
+    bank_df, encoded_cols = encoder_helper(bank_df, category_lst, response)
 
     # split data into training and test
-    X, y = df[numeric_lst + encoded_cols], df[response]
+    X, y = bank_df[numeric_lst + encoded_cols], bank_df[response]
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=42)
 
@@ -352,8 +351,8 @@ def main():
     '''
 
     # import data
-    df = import_data('./data/bank_data.csv')
-    df = create_churn_col(df)
+    bank_df = import_data('./data/bank_data.csv')
+    bank_df = create_churn_col(bank_df)
 
     # lists of categorical and numeric columns
     cat_cols = [
@@ -380,24 +379,24 @@ def main():
 
     # EDA - create and save plots
     for col in cat_cols:
-        cat_eda_plot(df, col, './images/eda/univariate_cat')
+        cat_eda_plot(bank_df, col, './images/eda/univariate_cat')
     for col in quant_cols:
-        num_eda_plot(df, col, './images/eda/univariate_num')
+        num_eda_plot(bank_df, col, './images/eda/univariate_num')
     multivariate_eda_plot(
-        df,
+        bank_df,
         './images/eda/multivariate',
         feature1='Customer_Age',
         feature2='Total_Trans_Amt')
     multivariate_eda_plot(
-        df,
+        bank_df,
         './images/eda/multivariate',
         feature1='Credit_Limit',
         feature2='Months_on_book')
-    multivariate_eda_plot(df, './images/eda/multivariate')
+    multivariate_eda_plot(bank_df, './images/eda/multivariate')
 
     # Feature Engineering
     X_train, X_test, y_train, y_test = perform_feature_engineering(
-        df, quant_cols, cat_cols, 'Churn')
+        bank_df, quant_cols, cat_cols, 'Churn')
 
     # Train Models
     lrc, y_train_preds_lr, y_test_preds_lr = train_logistic_reg(
