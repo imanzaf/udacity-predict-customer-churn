@@ -33,6 +33,7 @@ like 'Credit Limit' and 'Months on book', and background information like 'Marit
 + churn_library.py : library of functions to find customers who are likely to churn
 + churn_script_logging_and_tests.py : unit tests for all functions in churn_library.py
 + conftest.py : fixtures in the pytest Namespace for use in churn_script_logging_and_tests.py
++ requirements.txt : specifies libraries and respective versions required in running the completed scripts
 
 <br/>
 
